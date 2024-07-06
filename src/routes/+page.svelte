@@ -1,0 +1,182 @@
+<script>
+    import { io } from "socket.io-client";
+
+    const socket = io();
+
+    const allChoices = [
+        "Allan",
+        "Riko",
+        "Adele",
+        "Richard",
+        "Rihana",
+        "Hans",
+        "Cassandra",
+        "Johannes",
+        "Andrea",
+        "Patrik",
+        "Mirelle",
+        "Victoria",
+        "Anneliis",
+        "Mattias",
+        "Rudolf",
+        "Jesse",
+        "Kairon",
+        "Simona",
+        "Britt",
+        "Rasmus",
+        "Teele",
+        "Aaron",
+        "Hanna",
+        "Lauri",
+        "Eve",
+    ];
+    let question = "a";
+    let choice = "";
+
+    let choices = allChoices;
+
+    function search(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        choices = allChoices.filter((name) =>
+            name.toLowerCase().includes(searchTerm),
+        );
+    }
+
+    socket.on("question", (qQuestion) => {
+        question = qQuestion;
+    });
+
+    function submit() {
+        if (!choice) return;
+        socket.emit("submit", choice);
+        choice = "";
+        question = "";
+    }
+</script>
+
+<main>
+    {#if !question}
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <h1 on:click={(e) => (e.target.innerText = "[ ;")}>Ootan...</h1>
+    {:else}
+        <div class="choose">
+            <h1 class="question">{question}</h1>
+            <input
+                on:input={search}
+                type="text"
+                class="search"
+                placeholder="Otsi..."
+            />
+            <div class="choices">
+                {#each choices as name}
+                    <button
+                        on:click={() => (choice = name)}
+                        class:selected={choice === name}
+                        class="choice"
+                        id={name}
+                    >
+                        <img src={`/person.jpeg`} alt="" />
+                        <p>{name}</p>
+                    </button>
+                {/each}
+            </div>
+            <button on:click={submit} class="submit">Esita</button>
+        </div>
+    {/if}
+</main>
+
+<style>
+    .choose {
+        display: flex;
+        margin: auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .choices {
+        width: 295px;
+        height: 500px;
+        scrollbar-width: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(2000, 1fr);
+        min-height: 0;
+        overflow: auto;
+        border: 3px solid black;
+        transition: all 1s;
+    }
+
+    .choice {
+        margin: auto;
+        margin-block: 1rem;
+
+        width: 120px;
+        height: 120px;
+
+        background-color: rgb(148, 148, 148);
+        border: 2px solid grey;
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .choice p,
+    .choice img {
+        font-size: 1.3rem;
+        pointer-events: none;
+    }
+    .choice img {
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .selected {
+        background-color: rgb(85, 85, 85);
+        transform: scale(1.1);
+    }
+
+    .submit {
+        margin: 1.5rem;
+
+        width: 300px;
+        height: 50px;
+
+        font-size: 1.3rem;
+
+        background-color: rgb(85, 85, 85);
+        border: 2px solid grey;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .submit:active {
+        background-color: rgb(131, 131, 131);
+    }
+
+    .search {
+        color: black;
+
+        width: 300px;
+        height: 50px;
+
+        font-size: 1.3rem;
+        border-radius: 5px;
+    }
+
+    .question {
+        font-size: 2rem;
+        color: #fff;
+        text-align: center;
+        margin: 20px;
+    }
+
+    button:hover {
+        background-color: rgb(68, 68, 68);
+    }
+</style>
