@@ -38,7 +38,7 @@
         }
     });
 
-    let i = 2;
+    let i = 0;
     let questions = [
         "Kes on klassi kõige naljakam?",
         "Kes on kõige loomingulisem?",
