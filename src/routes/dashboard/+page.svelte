@@ -82,7 +82,7 @@
         socket.emit("ask", questions[i]);
         i++;
     }
-    let condition = false;
+    let condition = true;
 
 </script>
 
