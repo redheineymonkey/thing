@@ -3,6 +3,8 @@
     import JSConfetti from "js-confetti";
     import { onMount } from "svelte";
 
+    const socket = io();
+    
     let win;
     let confetti;
     onMount(() => {
@@ -20,13 +22,12 @@
             i = 1;
             socket.emit("ask", (questions[i - 1] = q));
         };
-        window.setI = (a) => {
-            i = a
+        window.i = (x) => {
+            i = x
         }
     });
-    const socket = io();
 
-    let winner = "a";
+    let winner = ""; 
     socket.on("end", (result) => {
         if (!result) {
             socket.emit("ask", questions[i - 1]);
@@ -81,7 +82,7 @@
         socket.emit("ask", questions[i]);
         i++;
     }
-    let condition = true;
+    let condition = false;
 
 </script>
 
@@ -113,7 +114,7 @@
         {/if}
     {:else}
         <input
-            style="background-color: white; color: white; text-align: center; font-size: 1px; "
+            style="background-color: grey; color: white; text-align: center; font-size: 1px; "
             type="text"
             on:input={(e) =>
                 (condition = e.target.value === "9012" ? true : false)}

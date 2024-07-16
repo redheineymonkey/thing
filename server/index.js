@@ -8,7 +8,7 @@ import http from 'http';
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const port = 5173;
+const port = 80;
 
 app.use(handler);
 
@@ -52,7 +52,7 @@ async function endRound() {
     chwinner = null
 }
 async function broadcastProgress() {
-    if (timeLeft <= 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length < 0) {
+    if (timeLeft <= 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
         currentQuestion = '';
         await endRound();
     } else {
@@ -122,4 +122,4 @@ process.on('exit', () => {
     console.log(data.join('\n'));
 });
 
-server.listen(port);
+server.listen(port, () => {console.log(port)});

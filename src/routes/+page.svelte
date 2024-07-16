@@ -30,7 +30,7 @@
         "Lauri",
         "Eve",
     ];
-    let question = "a";
+    let question = "";
     let choice = "";
 
     let choices = allChoices;
@@ -115,7 +115,7 @@
         width: 120px;
         height: 120px;
 
-        background-color: rgb(148, 148, 148);
+        background-color: rgb(0, 0, 0);
         border: 2px solid grey;
         display: flex;
 
