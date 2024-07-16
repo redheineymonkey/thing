@@ -149,7 +149,7 @@
     main {
         z-index: 0;
         margin: auto;
-        margin-top: 10px;
+        margin-top: 20px;
         height: 75vh;
         width: 75vw;
         background-color: #222;
@@ -194,7 +194,7 @@
     .question {
         text-align: center;
         font-size: 50px;
-        margin-top: 20px;
+        margin-top: 40px;
     }
     .time,
     .numofanswers {
