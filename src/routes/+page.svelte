@@ -76,7 +76,7 @@
                         class="choice"
                         id={name}
                     >
-                        <img src={`/person.jpeg`} alt="" />
+                        <img src={`/${name}.jpeg`} alt="" srcset="/person.jpeg"/>
                         <p>{name}</p>
                     </button>
                 {/each}

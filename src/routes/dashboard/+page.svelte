@@ -95,8 +95,9 @@
                 {#if winner}
                     <img
                         class="winner-pic"
-                        src={`/person.jpeg`}
+                        src={`/${winner}.jpeg`}
                         alt="winner"
+                        srcset="/person.jpeg"
                     />
                     <h1 class="winner-name">{winner}</h1>
                     <button
@@ -193,7 +194,7 @@
     .question {
         text-align: center;
         font-size: 50px;
-        margin-top: 40px;
+        margin-top: 20px;
     }
     .time,
     .numofanswers {
