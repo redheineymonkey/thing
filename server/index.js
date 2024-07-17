@@ -27,7 +27,7 @@ function countVotes(array) {
     array.forEach(item => {
         obj[item] = (obj[item] || 0) + 1;
     });
-
+    
     let maxKey = null;
     let maxValue = Number.MIN_SAFE_INTEGER;
 
@@ -38,17 +38,16 @@ function countVotes(array) {
         }
     }
 
-    if (obj != {}){
-        console.log(obj)
-        console.log(maxKey, ": ", maxValue)
-        data.push(`${JSON.stringify(obj)} | ${maxKey}: ${maxValue}`)
-    }
+    console.log(obj)
+    console.log(maxKey, ": ", maxValue)
+    data.push(`${JSON.stringify(obj)} | ${maxKey}: ${maxValue}`)
+    
     return maxKey;
 }
 async function endRound() {
     const result = chwinner || countVotes(answers);
-    answers = [];
     io.emit('end', result);
+    answers = [];
     chwinner = null
 }
 async function broadcastProgress() {
