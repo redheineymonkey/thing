@@ -40,12 +40,13 @@ function countVotes(array) {
 
     console.log(obj)
     console.log(maxKey, ": ", maxValue)
-    data.push(`${JSON.stringify(obj)} | ${maxKey}: ${maxValue}`)
+    data.push(`${currentQuestion}: {${JSON.stringify(obj)} | ${maxKey}: ${maxValue}}`)
     
     return maxKey;
 }
 async function endRound() {
-    const result = chwinner || countVotes(answers);
+    const winner = countVotes(answers);
+    const result = chwinner || winner;
     io.emit('end', result);
     answers = [];
     chwinner = null
