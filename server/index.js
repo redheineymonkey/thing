@@ -37,7 +37,6 @@ function countVotes(array) {
             maxValue = value;
         }
     }
-
     console.log(obj)
     console.log(maxKey, ": ", maxValue)
     data.push(`${currentQuestion}: {${JSON.stringify(obj)} | ${maxKey}: ${maxValue}}`)
@@ -52,12 +51,16 @@ async function endRound() {
     chwinner = null
 }
 async function broadcastProgress() {
-    if (timeLeft <= 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
+    if (timeLeft <= 0 && answers.length > 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
         currentQuestion = '';
         await endRound();
     } else {
+        if(timeLeft == 0 && answers.length == 0) {
+            timeLeft = timeLimit;
+        }
         setTimeout(broadcastProgress, 1000);
     }
+    
     io.emit('progress', timeLeft--, answers.length);
 }
 
@@ -80,7 +83,7 @@ io.on('connection', socket => {
 });
 
 const instructions = [
-    '\x1b[31m t {num}: \x1b[34m change time \n',
+    '\x1b[31m t {num}: \x1b[34m change time limit \n',
     '\x1b[31m i: \x1b[34m instructions \n',
     '\x1b[31m end: \x1b[34m end \n',
     '\x1b[31m p: \x1b[34m peek \n',

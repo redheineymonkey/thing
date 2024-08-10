@@ -76,7 +76,11 @@
                         class="choice"
                         id={name}
                     >
-                        <img src={`/${name}.jpeg`} alt="" srcset="/person.jpeg"/>
+                        <img
+                            src={`/${name}.jpeg`}
+                            alt=""
+                            srcset="/person.jpeg"
+                        />
                         <p>{name}</p>
                     </button>
                 {/each}
@@ -87,6 +91,13 @@
 </main>
 
 <style>
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+    * {
+        font-family: "Space Grotesk", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
     .choose {
         display: flex;
         margin: auto;
@@ -122,6 +133,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        transition: 0.1s;
     }
     .choice p,
     .choice img {
@@ -135,7 +147,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .selected {
-        background-color: rgb(85, 85, 85);
+        background-color: rgb(50, 50, 50);
         transform: scale(1.1);
     }
 

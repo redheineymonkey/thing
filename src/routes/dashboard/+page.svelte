@@ -22,8 +22,11 @@
             i = 1;
             socket.emit("ask", (questions[i - 1] = q));
         };
-        window.i = (x) => {
+        window.setI = (x) => {
             i = x
+        }
+        window.setWinner = (x) => {
+            winner = x
         }
     });
 
@@ -124,6 +127,13 @@
 </main>
 
 <style>
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+    * {
+        font-family: "Ubuntu MOno", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
     .gradient {
         position: fixed;
         top: 0;
@@ -150,8 +160,8 @@
         z-index: 0;
         margin: auto;
         margin-top: 20px;
-        height: 75vh;
-        width: 75vw;
+        height: 80vh;
+        width: 80vw;
         background-color: #222;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
@@ -194,6 +204,7 @@
     .question {
         text-align: center;
         font-size: 50px;
+        margin-top: 1rem;
     }
     .time,
     .numofanswers {
