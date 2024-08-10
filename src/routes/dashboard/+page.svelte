@@ -13,7 +13,7 @@
             jsConfetti.addConfetti({
                 confettiRadius: 9,
                 confettiNumber: 500,
-            });
+            });                    
         };
         win = new Audio("/win.mp3");
 
