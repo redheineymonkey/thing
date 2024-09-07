@@ -8,7 +8,6 @@
         "Riko",
         "Adele",
         "Richard",
-        "Rihana",
         "Hans",
         "Cassandra",
         "Johannes",
