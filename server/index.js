@@ -118,6 +118,9 @@ process.stdin.on('data', function (text) {
     if (text.trim().startsWith('ch ')) {
         chwinner = text.trim().slice(3);
     }
+    if (text.trim().startsWith('settime ')) {
+        timeLeft = parseInt(text.trim().slice(8));
+    }
 });
 
 process.on('exit', () => {
