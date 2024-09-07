@@ -8,7 +8,7 @@ import http from 'http';
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const port = 80;
+const port = 8080;
 
 app.use(handler);
 
@@ -43,22 +43,22 @@ function countVotes(array) {
     
     return maxKey;
 }
-async function endRound() {
+async function end() {
     const winner = countVotes(answers);
     const result = chwinner || winner;
     io.emit('end', result);
     answers = [];
     chwinner = null
 }
-async function broadcastProgress() {
+async function progress() {
     if (timeLeft <= 0 && answers.length > 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
         currentQuestion = '';
-        await endRound();
+        await end();
     } else {
         if(timeLeft == 0 && answers.length == 0) {
             timeLeft = timeLimit;
         }
-        setTimeout(broadcastProgress, 1000);
+        setTimeout(progress, 1000);
     }
     
     io.emit('progress', timeLeft--, answers.length);
@@ -74,7 +74,7 @@ io.on('connection', socket => {
         timeLeft = timeLimit;
         currentQuestion = question;
         io.emit('question', question);
-        broadcastProgress()
+        progress()
     });
 
     socket.on('submit', answer => {
@@ -115,8 +115,8 @@ process.stdin.on('data', function (text) {
     if (text.trim() === 'e') {
         process.exit();
     }
-    if (text.trim().startsWith('cheat ')) {
-        chwinner = text.trim().slice(6);
+    if (text.trim().startsWith('ch ')) {
+        chwinner = text.trim().slice(3);
     }
 });
 

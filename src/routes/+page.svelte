@@ -42,13 +42,19 @@
         );
     }
 
-    socket.on("question", (qQuestion) => {
-        question = qQuestion;
+    socket.on("question", (currentQuestion) => {
+        if (localStorage.getItem("lastQuestion") == currentQuestion) {
+            question = ''
+        }
+        else{
+            question = currentQuestion;
+        }
     });
-
+    
     function submit() {
         if (!choice) return;
         socket.emit("submit", choice);
+        localStorage.setItem("lastQuestion", question);
         choice = "";
         question = "";
     }
