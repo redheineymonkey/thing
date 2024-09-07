@@ -96,7 +96,7 @@
 </main>
 
 <style>
-    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?&family=Space+Grotesk&display=swap");
     * {
         font-family: "Space Grotesk", sans-serif;
         font-optical-sizing: auto;
