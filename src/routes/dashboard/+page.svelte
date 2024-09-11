@@ -74,9 +74,9 @@
                 {#if winner}
                     <img
                         class="winner-pic"
-                        src={`/${winner}.jpeg`}
+                        src={`/friends/${winner}.jpeg`}
                         alt="winner"
-                        srcset="/person.jpeg"
+                        srcset="/friends/person.jpeg"
                     />
                     <h1 class="winner-name">{winner}</h1>
                     <button

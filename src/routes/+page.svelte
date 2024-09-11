@@ -82,9 +82,9 @@
                         id={name}
                     >
                         <img
-                            src={`/${name}.jpeg`}
+                            src={`/friends/${name}.jpeg`}
                             alt=""
-                            srcset="/person.jpeg"
+                            srcset="/friends/person.jpeg"
                         />
                         <p>{name}</p>
                     </button>
