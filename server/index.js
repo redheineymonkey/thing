@@ -21,13 +21,15 @@ let answers = [];
 let currentQuestion = '';
 
 let chwinner = null;
+let progressInterval = null;
+
 function countVotes(array) {
     const obj = {};
 
     array.forEach(item => {
         obj[item] = (obj[item] || 0) + 1;
     });
-    
+
     let maxKey = null;
     let maxValue = Number.MIN_SAFE_INTEGER;
 
@@ -40,44 +42,56 @@ function countVotes(array) {
     console.log(obj)
     console.log(maxKey, ": ", maxValue)
     data.push(`${currentQuestion}: {${JSON.stringify(obj)} | ${maxKey}: ${maxValue}}`)
-    
+
     return maxKey;
 }
-async function end() {
+function end() {
     const winner = countVotes(answers);
     const result = chwinner || winner;
     io.emit('end', result);
+    timeLeft = timeLimit;
     answers = [];
-    chwinner = null
-}
-async function progress() {
-    //                                                                                                           <
-    if (timeLeft <= 0.5 && answers.length > 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
-        currentQuestion = '';
-        await end();
-    } else {
-        if(timeLeft <= 0.3 && answers.length == 0) {
-            timeLeft = timeLimit;
-        }
-        setTimeout(progress, 100);
-    }
-    io.emit('progress', timeLeft-=0.1, answers.length);
+    chwinner = null;
 }
 
+function progress() {
+    if (progressInterval) clearInterval(progressInterval);
+
+    progressInterval = setInterval(() => {
+        if (!currentQuestion) {
+            clearInterval(progressInterval);
+            return;
+        }
+
+        if (io.of('/').sockets.size - 1 >= answers.length && answers.length >= 1 || timeLeft <= 1 && answers.length >= 1) {
+            clearInterval(progressInterval);
+            currentQuestion = '';
+            end();
+        } else {
+            if (timeLeft < 1 && answers.length === 0) {
+                timeLeft = timeLimit;
+            }
+            io.emit('progress', timeLeft--, answers.length);
+        }
+    }, 1000);
+}
+
+
 io.on('connection', socket => {
-    console.log(io.sockets.sockets.size - 1, "users connected");
+    console.log(io.of('/').sockets.size - 1, "users connected");
     if (currentQuestion) {
         socket.emit('question', currentQuestion);
     }
     socket.on('dashboard-connection', () => {
+        io.emit('progress', timeLeft, answers.length);
         io.emit('question', '');
         currentQuestion = '';
         timeLeft = timeLimit;
         answers = [];
     })
     socket.on('ask', (question) => {
-        if (currentQuestion == question) {console.log("hello")}
-        else{
+        if (currentQuestion == question) { console.log("hello") }
+        else {
             answers = [];
             timeLeft = timeLimit;
             currentQuestion = question;
@@ -139,4 +153,4 @@ process.on('exit', () => {
     console.log(data.join('\n'));
 });
 
-server.listen(port, () => {console.log(port)});
+server.listen(port, () => { console.log(port) });

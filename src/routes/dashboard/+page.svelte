@@ -58,6 +58,9 @@
         "Kes on kõige ohtlikum?",
         "Kes on su lemmik?",
     ];
+    for (let i = 0; i < 100; i++) {
+        questions[i] = Math.random().toString(36).substring(2, 7);
+    }
 
     let progress = {
         timeLeft: 0,
@@ -76,7 +79,7 @@
         socket.emit("ask", questions[i]);
         i++;
     }
-    let condition = true;
+    let condition = false;
 </script>
 
 <div class="gradient"></div>
