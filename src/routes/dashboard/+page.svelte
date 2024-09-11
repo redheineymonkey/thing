@@ -1,11 +1,12 @@
 <script>
-    import { goto } from '$app/navigation';
+    import { goto } from "$app/navigation";
     import { io } from "socket.io-client";
     import JSConfetti from "js-confetti";
     import { onMount } from "svelte";
 
     const socket = io();
-    
+    socket.emit('dasboard-connection')
+
     let win;
     let confetti;
     onMount(() => {
@@ -14,7 +15,7 @@
             jsConfetti.addConfetti({
                 confettiRadius: 9,
                 confettiNumber: 500,
-            });                    
+            });
         };
         win = new Audio("/win.mp3");
 
@@ -24,14 +25,14 @@
             socket.emit("ask", (questions[i - 1] = q));
         };
         window.setI = (x) => {
-            i = x
-        }
+            i = x;
+        };
         window.setWinner = (x) => {
-            winner = x
-        }
+            winner = x;
+        };
     });
 
-    let winner = ""; 
+    let winner = "";
     socket.on("end", (result) => {
         if (!result) {
             socket.emit("ask", questions[i - 1]);
@@ -44,7 +45,19 @@
     });
 
     let i = 0;
-    let questions = [];
+    let questions = [
+        "Kes on kõige kiireim?",
+        "Kes on kõige naljakam?",
+        "Kes saab kõige suurema tõenäosusega proffsportlaseks?",
+        "Kes loeb kõige rohkem raamatuid?",
+        "Kes hilineb kõige tõenäolisemalt tunnist?",
+        "Kes võidab kõige tõenäolisemalt Nobelli preemia?",
+        "Kes peaks hullu majas istuma?",
+        "Kes nutaks kui neilt võetakse telefon ära?",
+        "Kes on kõige sigmam??",
+        "Kes on kõige ohtlikum?",
+        "Kes on su lemmik?",
+    ];
 
     let progress = {
         timeLeft: 0,
@@ -56,13 +69,14 @@
     });
 
     function ask() {
-        if (questions.length == i) {goto('/yayyyy')};
+        if (questions.length == i) {
+            goto("/yayyyy");
+        }
         winner = "";
         socket.emit("ask", questions[i]);
         i++;
     }
     let condition = true;
-
 </script>
 
 <div class="gradient"></div>
@@ -85,11 +99,12 @@
                         class="start">Järgmine</button
                     >
                 {:else}
-                    <h1 class="time">{Math.ceil(progress.timeLeft)} sekundit jäänud.</h1>
+                    <h1 class="time">
+                        {Math.ceil(progress.timeLeft)} sekundit jäänud.
+                    </h1>
                     <h1 class="numofanswers">{progress.ansnum} vastust.</h1>
                 {/if}
             </div>
-        
         {:else}
             <button on:click={ask} class="start"> Alusta </button>
         {/if}
@@ -110,7 +125,6 @@
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
-
     }
     .gradient {
         position: fixed;
@@ -119,18 +133,18 @@
         width: 100%;
         height: 100%;
         z-index: -1;
-        background: linear-gradient(90deg ,#111, #454545);
+        background: linear-gradient(90deg, #111, #454545);
         background-size: 1000% 1000%;
         animation: spin 10s linear infinite;
     }
-    @keyframes spin{
-        0%{
+    @keyframes spin {
+        0% {
             background-position: 0 50%;
         }
-        50%{
+        50% {
             background-position: 100% 50%;
         }
-        100%{
+        100% {
             background-position: 0 50%;
         }
     }

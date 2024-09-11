@@ -69,9 +69,12 @@ io.on('connection', socket => {
     if (currentQuestion) {
         socket.emit('question', currentQuestion);
     }
-    else {
-        socket.emit('progress', timeLeft, answers.length);
-    }
+    socket.on('dashboard-connection', () => {
+        io.emit('question', '');
+        currentQuestion = '';
+        timeLeft = timeLimit;
+        answers = [];
+    })
     socket.on('ask', (question) => {
         if (currentQuestion == question) {console.log("hello")}
         else{
@@ -94,7 +97,7 @@ const instructions = [
     '\x1b[31m i: \x1b[34m instructions \n',
     '\x1b[31m end: \x1b[34m sets time left to 0 \n',
     '\x1b[31m peek: \x1b[34m peek \n',
-    '\x1b[31m c: \x1b[34m clear console \n',
+    '\x1b[31m " ": \x1b[34m clear console \n',
     '\x1b[31m e: \x1b[34m exit \n \x1b[37m',
     'ch '
 ].join('');
@@ -120,7 +123,7 @@ process.stdin.on('data', function (text) {
         console.clear();
         countVotes(answers);
     }
-    if (text.trim() === 'c') {
+    if (text.trim() === '') {
         console.clear();
     }
     if (text.trim() === 'e') {
