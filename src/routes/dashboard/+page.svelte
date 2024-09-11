@@ -1,6 +1,6 @@
 <script>
-    import { io } from "socket.io-client";
     import { goto } from '$app/navigation';
+    import { io } from "socket.io-client";
     import JSConfetti from "js-confetti";
     import { onMount } from "svelte";
 
@@ -56,7 +56,7 @@
     });
 
     function ask() {
-        if (questions.length == i) {goto('/yayyyy');};
+        if (questions.length == i) {goto('/yayyyy')};
         winner = "";
         socket.emit("ask", questions[i]);
         i++;
