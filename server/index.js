@@ -15,7 +15,7 @@ app.use(handler);
 let data = []
 
 let timeLimit = 30;
-let timeLeft = 30;
+let timeLeft = 0;
 
 let answers = [];
 let currentQuestion = '';
@@ -51,17 +51,17 @@ async function end() {
     chwinner = null
 }
 async function progress() {
-    if (timeLeft <= 0 && answers.length > 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
+    //                                                                                                           <
+    if (timeLeft <= 0.5 && answers.length > 0 || answers.length >= io.sockets.sockets.size - 1 && answers.length > 0) {
         currentQuestion = '';
         await end();
     } else {
-        if(timeLeft == 0 && answers.length == 0) {
+        if(timeLeft <= 0.3 && answers.length == 0) {
             timeLeft = timeLimit;
         }
-        setTimeout(progress, 1000);
+        setTimeout(progress, 100);
     }
-    
-    io.emit('progress', timeLeft--, answers.length);
+    io.emit('progress', timeLeft-=0.1, answers.length);
 }
 
 io.on('connection', socket => {
@@ -69,12 +69,18 @@ io.on('connection', socket => {
     if (currentQuestion) {
         socket.emit('question', currentQuestion);
     }
+    else {
+        socket.emit('progress', timeLeft, answers.length);
+    }
     socket.on('ask', (question) => {
-        answers = [];
-        timeLeft = timeLimit;
-        currentQuestion = question;
-        io.emit('question', question);
-        progress()
+        if (currentQuestion == question) {console.log("hello")}
+        else{
+            answers = [];
+            timeLeft = timeLimit;
+            currentQuestion = question;
+            io.emit('question', question);
+            progress()
+        }
     });
 
     socket.on('submit', answer => {
@@ -83,12 +89,14 @@ io.on('connection', socket => {
 });
 
 const instructions = [
-    '\x1b[31m t {num}: \x1b[34m change time limit \n',
+    '\x1b[31m t {num}: \x1b[34m change time\n',
+    '\x1b[31m tl {num}: \x1b[34m change time limit\n',
     '\x1b[31m i: \x1b[34m instructions \n',
-    '\x1b[31m end: \x1b[34m end \n',
-    '\x1b[31m p: \x1b[34m peek \n',
+    '\x1b[31m end: \x1b[34m sets time left to 0 \n',
+    '\x1b[31m peek: \x1b[34m peek \n',
     '\x1b[31m c: \x1b[34m clear console \n',
     '\x1b[31m e: \x1b[34m exit \n \x1b[37m',
+    'ch '
 ].join('');
 
 console.log(instructions);
@@ -96,6 +104,9 @@ console.log(instructions);
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', function (text) {
     if (text.trim().startsWith('t ')) {
+        timeLeft = parseInt(text.trim().slice(2));
+    }
+    if (text.trim().startsWith('tl ')) {
         console.log('prev: ', timeLimit);
         timeLimit = parseInt(text.trim().slice(2));
     }
@@ -105,7 +116,7 @@ process.stdin.on('data', function (text) {
     if (text.trim() === 'end') {
         timeLeft = 0;
     }
-    if (text.trim() === 'p') {
+    if (text.trim() === 'peek') {
         console.clear();
         countVotes(answers);
     }
@@ -117,9 +128,6 @@ process.stdin.on('data', function (text) {
     }
     if (text.trim().startsWith('ch ')) {
         chwinner = text.trim().slice(3);
-    }
-    if (text.trim().startsWith('settime ')) {
-        timeLeft = parseInt(text.trim().slice(8));
     }
 });
 

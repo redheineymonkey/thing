@@ -1,7 +1,8 @@
 <script>
     import { io } from "socket.io-client";
-    import { onMount } from "svelte";
+    import { goto } from '$app/navigation';
     import JSConfetti from "js-confetti";
+    import { onMount } from "svelte";
 
     const socket = io();
     
@@ -46,7 +47,7 @@
     let questions = [];
 
     let progress = {
-        timeLeft: 30,
+        timeLeft: 0,
         ansnum: 0,
     };
     socket.on("progress", (time, num) => {
@@ -55,6 +56,7 @@
     });
 
     function ask() {
+        if (questions.length == i) {goto('/yayyyy');};
         winner = "";
         socket.emit("ask", questions[i]);
         i++;
@@ -83,10 +85,11 @@
                         class="start">Järgmine</button
                     >
                 {:else}
-                    <h1 class="time">{progress.timeLeft} sekundit jäänud.</h1>
+                    <h1 class="time">{Math.ceil(progress.timeLeft)} sekundit jäänud.</h1>
                     <h1 class="numofanswers">{progress.ansnum} vastust.</h1>
                 {/if}
             </div>
+        
         {:else}
             <button on:click={ask} class="start"> Alusta </button>
         {/if}
@@ -101,12 +104,13 @@
 </main>
 
 <style>
-    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
     * {
-        font-family: "Ubuntu MOno", sans-serif;
+        font-family: "Ubuntu Mono", sans-serif;
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
+
     }
     .gradient {
         position: fixed;
