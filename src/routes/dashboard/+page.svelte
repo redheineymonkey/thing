@@ -5,7 +5,6 @@
     import { onMount } from "svelte";
 
     const socket = io();
-    socket.emit('dasboard-connection')
 
     let win;
     let confetti;
@@ -30,6 +29,9 @@
         window.setWinner = (x) => {
             winner = x;
         };
+        window.onbeforeunload = () => {
+            socket.emit("ask", '');
+        }
     });
 
     let winner = "";

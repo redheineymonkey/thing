@@ -51,7 +51,8 @@ function end() {
     chwinner = null
 }
 function progress() {
-    if (io.of('/').sockets.size - 1 == answers.length && answers.length > 0) {
+    if (!currentQuestion) return
+    if (io.sockets.sockets.size - 1 == answers.length && answers.length > 0) {
         end()
         return
     } else if (timeLeft <= 0 && answers.length > 0) {
@@ -62,7 +63,8 @@ function progress() {
         timeLeft = timeLimit
     }
     setTimeout(() => {
-        progress(); console.log("hello: ", timeLeft);
+        progress();
+        console.log("hello: ", timeLeft);
         
     }, 1000);
 
@@ -70,16 +72,11 @@ function progress() {
 }
 
 io.on('connection', socket => {
-    console.log(io.of('/').sockets.size - 1, "users connected");
+    console.log(io.sockets.sockets.size - 1, "users connected");
     if (currentQuestion) {
         socket.emit('question', currentQuestion);
     }
-    socket.on('dashboard-connection', () => {
-        io.emit('question', '');
-        currentQuestion = '';
-        timeLeft = timeLimit;
-        answers = [];
-    })
+
     socket.on('ask', (question) => {
         if (currentQuestion == question) { console.log("hello") }
         else {
