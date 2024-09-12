@@ -31,6 +31,7 @@
         };
         window.onbeforeunload = () => {
             socket.emit("ask", '');
+            return 'ya sure bout that?';
         }
     });
 
