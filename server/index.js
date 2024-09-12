@@ -55,20 +55,20 @@ function progress() {
     if (io.sockets.sockets.size - 1 == answers.length && answers.length > 0) {
         end()
         return
-    } else if (timeLeft <= 0 && answers.length > 0) {
+    } else if (timeLeft <= 0.5 && answers.length > 0) {
         end()
         return
     }
-    if (timeLeft <= 0 && answers.length == 0) {
+    if (timeLeft <= 0.5 && answers.length == 0) {
         timeLeft = timeLimit
     }
     setTimeout(() => {
         progress();
-        console.log("hello: ", timeLeft);
+        // console.log("hello: ", timeLeft);
         
-    }, 1000);
+    }, 100);
 
-    io.emit('progress', timeLeft--, answers.length);
+    io.emit('progress', timeLeft-=0.1, answers.length);
 }
 
 io.on('connection', socket => {
