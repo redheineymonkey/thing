@@ -21,8 +21,6 @@ let answers = [];
 let currentQuestion = '';
 
 let chwinner = null;
-let progressInterval = null;
-
 function countVotes(array) {
     const obj = {};
 
@@ -49,33 +47,27 @@ function end() {
     const winner = countVotes(answers);
     const result = chwinner || winner;
     io.emit('end', result);
-    timeLeft = timeLimit;
     answers = [];
-    chwinner = null;
+    chwinner = null
 }
-
 function progress() {
-    if (progressInterval) clearInterval(progressInterval);
-
-    progressInterval = setInterval(() => {
-        if (!currentQuestion) {
-            clearInterval(progressInterval);
-            return;
-        }
-
-        if (io.of('/').sockets.size - 1 >= answers.length && answers.length >= 1 || timeLeft <= 1 && answers.length >= 1) {
-            clearInterval(progressInterval);
-            currentQuestion = '';
-            end();
-        } else {
-            if (timeLeft < 1 && answers.length === 0) {
-                timeLeft = timeLimit;
-            }
-            io.emit('progress', timeLeft--, answers.length);
-        }
+    if (io.of('/').sockets.size - 1 == answers.length && answers.length > 0) {
+        end()
+        return
+    } else if (timeLeft <= 0 && answers.length > 0) {
+        end()
+        return
+    }
+    if (timeLeft <= 0 && answers.length == 0) {
+        timeLeft = timeLimit
+    }
+    setTimeout(() => {
+        progress(); console.log("hello: ", timeLeft);
+        
     }, 1000);
-}
 
+    io.emit('progress', timeLeft--, answers.length);
+}
 
 io.on('connection', socket => {
     console.log(io.of('/').sockets.size - 1, "users connected");
@@ -83,7 +75,6 @@ io.on('connection', socket => {
         socket.emit('question', currentQuestion);
     }
     socket.on('dashboard-connection', () => {
-        io.emit('progress', timeLeft, answers.length);
         io.emit('question', '');
         currentQuestion = '';
         timeLeft = timeLimit;
