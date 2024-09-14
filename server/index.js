@@ -8,6 +8,7 @@ import http from 'http';
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+const dashboard = io.of('/admin');
 const port = 8080;
 
 app.use(handler);
@@ -46,48 +47,47 @@ function countVotes(array) {
 function end() {
     const winner = countVotes(answers);
     const result = chwinner || winner;
-    io.emit('end', result);
+    dashboard.emit('end', result);
     answers = [];
     chwinner = null
 }
 function progress() {
     if (!currentQuestion) return
-    if (io.sockets.sockets.size - 1 == answers.length && answers.length > 0) {
+    if (io.sockets.sockets.size == answers.length && answers.length > 0) {
+        console.log("Equal sockets and answers and more than 1 answer");
         end()
         return
     } else if (timeLeft <= 0.5 && answers.length > 0) {
+        console.log("time out and more than 1 answer");
         end()
         return
     }
     if (timeLeft <= 0.5 && answers.length == 0) {
+        console.log("time ran out");
         timeLeft = timeLimit
     }
     setTimeout(() => {
         progress();
-        // console.log("hello: ", timeLeft);
-        
+
     }, 100);
 
-    io.emit('progress', timeLeft-=0.1, answers.length);
+    dashboard.emit('progress', timeLeft -= 0.1, answers.length);
 }
+dashboard.on('connection', socket => {
+    socket.on('ask', (question) => {
+        answers = [];
+        timeLeft = timeLimit;
+        currentQuestion = question;
+        io.emit('question', question);
+        progress()
 
+    });
+});
 io.on('connection', socket => {
-    console.log(io.sockets.sockets.size - 1, "users connected");
+    console.log(io.sockets.sockets.size, "users connected");
     if (currentQuestion) {
         socket.emit('question', currentQuestion);
     }
-
-    socket.on('ask', (question) => {
-        if (currentQuestion == question) { console.log("hello") }
-        else {
-            answers = [];
-            timeLeft = timeLimit;
-            currentQuestion = question;
-            io.emit('question', question);
-            progress()
-        }
-    });
-
     socket.on('submit', answer => {
         answers.push(answer);
     });

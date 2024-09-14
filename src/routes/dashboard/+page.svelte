@@ -4,7 +4,7 @@
     import JSConfetti from "js-confetti";
     import { onMount } from "svelte";
 
-    const socket = io();
+    const socket = io("/admin");
 
     let win;
     let confetti;
@@ -31,11 +31,20 @@
         };
         window.onbeforeunload = () => {
             socket.emit("ask", '');
-            return 'ya sure bout that?';
         }
     });
 
+    let i = 0;
+    let questions = [];
+    for (let i = 0; i < 100; i++) {
+        questions[i] = Math.random().toString(36).substring(2, 7);
+    }
+
     let winner = "";
+    let progress = {
+        timeLeft: 0,
+        ansnum: 0,
+    };
     socket.on("end", (result) => {
         if (!result) {
             socket.emit("ask", questions[i - 1]);
@@ -46,29 +55,6 @@
             // win.play();
         }
     });
-
-    let i = 0;
-    let questions = [
-        "Kes on kõige kiireim?",
-        "Kes on kõige naljakam?",
-        "Kes saab kõige suurema tõenäosusega proffsportlaseks?",
-        "Kes loeb kõige rohkem raamatuid?",
-        "Kes hilineb kõige tõenäolisemalt tunnist?",
-        "Kes võidab kõige tõenäolisemalt Nobelli preemia?",
-        "Kes peaks hullu majas istuma?",
-        "Kes nutaks kui neilt võetakse telefon ära?",
-        "Kes on kõige sigmam??",
-        "Kes on kõige ohtlikum?",
-        "Kes on su lemmik?",
-    ];
-    for (let i = 0; i < 100; i++) {
-        questions[i] = Math.random().toString(36).substring(2, 7);
-    }
-
-    let progress = {
-        timeLeft: 0,
-        ansnum: 0,
-    };
     socket.on("progress", (time, num) => {
         progress.timeLeft = time;
         progress.ansnum = num;
