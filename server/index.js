@@ -22,6 +22,8 @@ let answers = [];
 let currentQuestion = '';
 
 let chwinner = null;
+let podium = false
+
 function countVotes(array) {
     const obj = {};
 
@@ -42,7 +44,15 @@ function countVotes(array) {
     console.log(maxKey, ": ", maxValue)
     data.push(`${currentQuestion}: {${JSON.stringify(obj)} | ${maxKey}: ${maxValue}}`)
 
-    return maxKey;
+    if(podium){
+        const sortedEntries = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+        const top3 = sortedEntries.slice(0, 3).map(([key, value]) => ({ [key]: value }));
+        console.log(top3);
+        return top3;
+    }
+    else{
+        return maxKey;
+    }
 }
 function end() {
     const winner = countVotes(answers);
@@ -53,7 +63,7 @@ function end() {
 }
 function progress() {
     if (!currentQuestion) return
-    if (io.sockets.sockets.size == answers.length && answers.length > 0) {
+    if (io.sockets.sockets.size == answers.length && answers.length > 0) {                                      
         console.log("Equal sockets and answers and more than 1 answer");
         end()
         return
@@ -78,6 +88,13 @@ dashboard.on('connection', socket => {
         answers = [];
         timeLeft = timeLimit;
         currentQuestion = question;
+
+        if (question=="Kes on kõige targem?"){
+            podium = true
+        } else{
+            podium = false
+        }
+
         io.emit('question', question);
         progress()
 

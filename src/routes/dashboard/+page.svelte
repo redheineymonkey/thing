@@ -19,19 +19,23 @@
         win = new Audio("/win.mp3");
 
         window.ask = (q) => {
+            socket.emit("ask", "");
             winner = "";
             i = 1;
             socket.emit("ask", (questions[i - 1] = q));
         };
         window.setI = (x) => {
+            socket.emit("ask", "");
+            winner = "";
             i = x;
+            socket.emit("ask", questions[i - 1]);
         };
         window.setWinner = (x) => {
             winner = x;
         };
         window.onbeforeunload = () => {
-            socket.emit("ask", '');
-        }
+            socket.emit("ask", "");
+        };
     });
 
     let i = 0;
@@ -39,6 +43,7 @@
     for (let i = 0; i < 100; i++) {
         questions[i] = Math.random().toString(36).substring(2, 7);
     }
+    questions[0] = "Kes on kõige targem?";
 
     let winner = "";
     let progress = {
@@ -49,6 +54,7 @@
         if (!result) {
             socket.emit("ask", questions[i - 1]);
         } else {
+            socket.emit("ask", "");
             winner = result;
 
             confetti();
@@ -61,6 +67,7 @@
     });
 
     function ask() {
+        socket.emit("ask", "");
         if (questions.length == i) {
             goto("/yayyyy");
         }
@@ -78,13 +85,42 @@
             <div class="cont">
                 <h1 class="question">{i}. {questions[i - 1]}</h1>
                 {#if winner}
-                    <img
-                        class="winner-pic"
-                        src={`/friends/${winner}.jpeg`}
-                        alt="winner"
-                        srcset="/friends/person.jpeg"
-                    />
-                    <h1 class="winner-name">{winner}</h1>
+                    <div class="podium">
+                        {#if typeof winner == "object"}
+                            {#each winner as place, index}
+                                <div>
+                                    <img
+                                        class="winner-pic"
+                                        src={`/friends/${Object.keys(place)[0]}.jpeg`}
+                                        alt="winner"
+                                        srcset="/friends/person.jpeg"
+                                    />
+                                    <h1 class="winner-name">
+                                        {Object.keys(place)[0]}
+                                    </h1>
+                                    <h1 class="winner-place">
+                                        {index + 1}. koht
+                                    </h1>
+                                    <h1 class="winner-votes">
+                                        {Object.values(place)[0]}
+                                        {Object.values(place)[0] == 1
+                                            ? "hääletus"
+                                            : "hääletust"}
+                                    </h1>
+                                </div>
+                            {/each}
+                        {:else}
+                            <div>
+                                <img
+                                    class="winner-pic"
+                                    src={`/friends/${winner}.jpeg`}
+                                    alt="winner"
+                                    srcset="/friends/person.jpeg"
+                                />
+                                <h1 class="winner-name">{winner}</h1>
+                            </div>
+                        {/if}
+                    </div>
                     <button
                         style="margin-top: 0px;"
                         on:click={ask}
@@ -184,6 +220,23 @@
         text-align: center;
         font-size: 50px;
         margin-block: 20px;
+    }
+    .winner-place {
+        text-align: center;
+        font-size: 50px;
+        margin-block: 20px;
+    }
+    .winner-votes {
+        text-align: center;
+        font-size: 50px;
+        margin-block: 20px;
+    }
+    .podium {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 80px;
     }
     .question {
         text-align: center;
