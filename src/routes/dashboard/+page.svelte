@@ -6,7 +6,7 @@
 
     const socket = io("/admin");
 
-    let win;
+    let sound;
     let confetti;
     onMount(() => {
         let jsConfetti = new JSConfetti();
@@ -16,7 +16,7 @@
                 confettiNumber: 500,
             });
         };
-        win = new Audio("/win.mp3");
+        sound = new Audio("/win.mp3");
 
         window.ask = (q) => {
             socket.emit("ask", "");
@@ -39,11 +39,28 @@
     });
 
     let i = 0;
-    let questions = [];
-    for (let i = 0; i < 100; i++) {
-        questions[i] = Math.random().toString(36).substring(2, 7);
-    }
-    questions[0] = "Kes on kõige targem?";
+    let questions = [
+        "Kes on kõige kiireim?",
+        "Kes on kõige sportlikum?",
+        "Kes jõuab esimesena kooli?",
+        "Kes loeb kõige rohkem raamatuid?",
+        "Kes on parim kokk?",
+        "Kes on parim matemaatikas?",
+        "Kes on kõige targem?",
+        "Kellel on parim kujutlusvõime?",
+        "Kes hakkab kõige tõenäolisemalt ettevõtjaks?",
+        "Kes saab kõige tõenäolisemalt õpetajaks?",
+        "Kes saab kõige tõenäolisemalt kuulsaks?",
+        "Kes saab kõige tõenäolisemalt näitlejaks?",
+        "Kes on kõige naljakam?",
+        "Kes hilineb kõige tõenäolisemalt tundi?",
+        "Kes on kõige pikem?",
+        "Kes on kõige imelikum/veidram?",
+        "Kellel on kõige rohkem märkusi?",
+        "Kes on kõige sigmam??",
+        "Kes on kõige ohtlikum?",
+        "Kes on su lemmik?",
+    ];
 
     let winner = "";
     let progress = {
@@ -58,7 +75,7 @@
             winner = result;
 
             confetti();
-            // win.play();
+            // sound.play();
         }
     });
     socket.on("progress", (time, num) => {
@@ -199,7 +216,7 @@
         border-radius: 15px;
         font-size: 40px;
         margin-top: 40vh;
-        transition: all 0.2s;
+        transition: all 0.3s;
     }
     .start:hover {
         background-color: rgb(50, 50, 50);

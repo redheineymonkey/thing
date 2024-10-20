@@ -21,6 +21,8 @@ let timeLeft = 0;
 let answers = [];
 let currentQuestion = '';
 
+let podiumQuestions = ["Kes on kõige targem?", "Kes on parim matemaatikas?", "Kes hakkab kõige tõenäolisemalt ettevõtjaks?"]
+
 let chwinner = null;
 let podium = false
 
@@ -89,7 +91,7 @@ dashboard.on('connection', socket => {
         timeLeft = timeLimit;
         currentQuestion = question;
 
-        if (question=="Kes on kõige targem?"){
+        if (podiumQuestions.includes(question)){
             podium = true
         } else{
             podium = false

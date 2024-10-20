@@ -56,6 +56,7 @@
         localStorage.setItem("lastQuestion", question);
         choice = "";
         question = "";
+        choices = allChoices;
     }
 </script>
 
