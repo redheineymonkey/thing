@@ -43,13 +43,12 @@
 
     socket.on("question", (currentQuestion) => {
         if (localStorage.getItem("lastQuestion") == currentQuestion) {
-            question = ''
-        }
-        else{
+            question = "";
+        } else {
             question = currentQuestion;
         }
     });
-    
+
     function submit() {
         if (!choice) return;
         socket.emit("submit", choice);
@@ -85,8 +84,9 @@
                         <img
                             src={`/friends/${name}.jpeg`}
                             alt=""
-                            srcset="/friends/person.jpeg"
+                            onerror="this.onerror=null; this.src='/friends/person.jpeg';"
                         />
+
                         <p>{name}</p>
                     </button>
                 {/each}
@@ -151,6 +151,7 @@
         height: 80px;
         border-radius: 5px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 2px solid white;
     }
     .selected {
         background-color: rgb(50, 50, 50);

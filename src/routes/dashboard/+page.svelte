@@ -104,35 +104,69 @@
                 {#if winner}
                     <div class="podium">
                         {#if typeof winner == "object"}
-                            {#each winner as place, index}
-                                <div>
-                                    <img
-                                        class="winner-pic"
-                                        src={`/friends/${Object.keys(place)[0]}.jpeg`}
-                                        alt="winner"
-                                        srcset="/friends/person.jpeg"
-                                    />
-                                    <h1 class="winner-name">
-                                        {Object.keys(place)[0]}
-                                    </h1>
-                                    <h1 class="winner-place">
-                                        {index + 1}. koht
-                                    </h1>
-                                    <h1 class="winner-votes">
-                                        {Object.values(place)[0]}
-                                        {Object.values(place)[0] == 1
-                                            ? "hääletus"
-                                            : "hääletust"}
-                                    </h1>
-                                </div>
-                            {/each}
+                            <div class="podium-spot second-place">
+                                <img
+                                    class="winner-pic"
+                                    src={`/friends/${Object.keys(winner[1])[0]}.jpeg`}
+                                    alt="winner"
+                                    onerror="this.onerror=null; this.src='/friends/person.jpeg';"
+                                />
+                                <h1 class="winner-name">
+                                    {Object.keys(winner[1])[0]}
+                                </h1>
+                                <h1 class="winner-place">2. koht</h1>
+                                <h1 class="winner-votes">
+                                    {Object.values(winner[1])[0]}
+                                    {Object.values(winner[1])[0] == 1
+                                        ? "hääletus"
+                                        : "hääletust"}
+                                </h1>
+                            </div>
+
+                            <div class="podium-spot first-place">
+                                <img
+                                    class="winner-pic"
+                                    src={`/friends/${Object.keys(winner[0])[0]}.jpeg`}
+                                    alt="winner"
+                                    onerror="this.onerror=null; this.src='/friends/person.jpeg';"
+                                />
+                                <h1 class="winner-name">
+                                    {Object.keys(winner[0])[0]}
+                                </h1>
+                                <h1 class="winner-place">1. koht</h1>
+                                <h1 class="winner-votes">
+                                    {Object.values(winner[0])[0]}
+                                    {Object.values(winner[0])[0] == 1
+                                        ? "hääletus"
+                                        : "hääletust"}
+                                </h1>
+                            </div>
+
+                            <div class="podium-spot third-place">
+                                <img
+                                    class="winner-pic"
+                                    src={`/friends/${Object.keys(winner[2])[0]}.jpeg`}
+                                    alt="winner"
+                                    onerror="this.onerror=null; this.src='/friends/person.jpeg';"
+                                />
+                                <h1 class="winner-name">
+                                    {Object.keys(winner[2])[0]}
+                                </h1>
+                                <h1 class="winner-place">3. koht</h1>
+                                <h1 class="winner-votes">
+                                    {Object.values(winner[2])[0]}
+                                    {Object.values(winner[2])[0] == 1
+                                        ? "hääletus"
+                                        : "hääletust"}
+                                </h1>
+                            </div>
                         {:else}
                             <div>
                                 <img
                                     class="winner-pic"
                                     src={`/friends/${winner}.jpeg`}
                                     alt="winner"
-                                    srcset="/friends/person.jpeg"
+                                    onerror="this.onerror=null; this.src='/friends/person.jpeg';"
                                 />
                                 <h1 class="winner-name">{winner}</h1>
                             </div>
@@ -197,7 +231,8 @@
         z-index: 0;
         margin: auto;
         margin-top: 20px;
-        height: 80vh;
+        height: 85vh;
+        overflow: hidden;
         width: 80vw;
         background-color: #222;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -213,9 +248,9 @@
         border: 2px solid white;
         text-align: center;
         padding: 15px;
+        margin: 40vh;
         border-radius: 15px;
         font-size: 40px;
-        margin-top: 40vh;
         transition: all 0.3s;
     }
     .start:hover {
@@ -255,9 +290,25 @@
         justify-content: center;
         gap: 80px;
     }
+    .podium-spot {
+        padding: 10px;
+        margin: 0.45rem;
+    }
+    .first-place .winner-pic {
+        height: 300px;
+        width: 300px;
+    }
+    .second-place .winner-pic {
+        height: 270px;
+        width: 270px;
+    }
+    .third-place .winner-pic {
+        height: 260px;
+        width: 260px;
+    }
     .question {
         text-align: center;
-        font-size: 50px;
+        font-size: 64px;
         margin-top: 1rem;
     }
     .time,

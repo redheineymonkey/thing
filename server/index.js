@@ -49,6 +49,7 @@ function countVotes(array) {
     if(podium){
         const sortedEntries = Object.entries(obj).sort((a, b) => b[1] - a[1]);
         const top3 = sortedEntries.slice(0, 3).map(([key, value]) => ({ [key]: value }));
+        top3.push({ "": 0 }, { "": 0 });
         console.log(top3);
         return top3;
     }
