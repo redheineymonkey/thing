@@ -4,16 +4,14 @@ Kes jõuab esimesena kooli?
 Kes loeb kõige rohkem raamatuid?
 Kes on parim kokk?
 Kes on parim matemaatikas? (poodium)
+Kes käitub kõige lapselikumalt?
 Kes on kõige targem? (poodium)
-Kellel on parim kujutlusvõime?
-Kes hakkab kõige tõenäolisemalt ettevõtjaks? (poodium)
 Kes saab kõige tõenäolisemalt õpetajaks?
-Kes saab kõige tõenäolisemalt kuulsaks?
 Kes saab kõige tõenäolisemalt näitlejaks?
+Kes hakkab kõige tõenäolisemalt ettevõtjaks? (poodium)
 Kes on kõige naljakam?
-Kes hilineb kõige tõenäolisemalt tundi?
+Kes saab suurima tõenäosusega esimesena surma?
 Kes on kõige pikem?
-Kes on kõige imelikum/veidram?
 Kellel on kõige rohkem märkusi?
 Kes on kõige sigmam??
 Kes on kõige ohtlikum?

@@ -46,16 +46,14 @@
         "Kes loeb kõige rohkem raamatuid?",
         "Kes on parim kokk?",
         "Kes on parim matemaatikas?",
+        "Kes käitub kõige lapselikumalt?",
         "Kes on kõige targem?",
-        "Kellel on parim kujutlusvõime?",
-        "Kes hakkab kõige tõenäolisemalt ettevõtjaks?",
         "Kes saab kõige tõenäolisemalt õpetajaks?",
-        "Kes saab kõige tõenäolisemalt kuulsaks?",
         "Kes saab kõige tõenäolisemalt näitlejaks?",
+        "Kes hakkab kõige tõenäolisemalt ettevõtjaks?",
         "Kes on kõige naljakam?",
-        "Kes hilineb kõige tõenäolisemalt tundi?",
+        "Kes saab suurima tõenäosusega esimesena surma?",
         "Kes on kõige pikem?",
-        "Kes on kõige imelikum/veidram?",
         "Kellel on kõige rohkem märkusi?",
         "Kes on kõige sigmam??",
         "Kes on kõige ohtlikum?",
@@ -167,6 +165,7 @@
                                     src={`/friends/${winner}.jpeg`}
                                     alt="winner"
                                     onerror="this.onerror=null; this.src='/friends/person.jpeg';"
+                                    style="height: 350px;width: 350px;"
                                 />
                                 <h1 class="winner-name">{winner}</h1>
                             </div>
@@ -231,7 +230,7 @@
         z-index: 0;
         margin: auto;
         margin-top: 20px;
-        height: 85vh;
+        height: 90vh;
         overflow: hidden;
         width: 80vw;
         background-color: #222;
@@ -261,8 +260,8 @@
         background-color: rgb(102, 102, 102);
     }
     .winner-pic {
-        width: 300px;
-        height: 300px;
+        width: 400px;
+        height: 400px;
         margin: auto;
         margin-top: 20px;
         border-radius: 20px;

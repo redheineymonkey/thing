@@ -98,6 +98,10 @@
 
 <style>
     @import url("https://fonts.googleapis.com/css2?&family=Space+Grotesk&display=swap");
+
+    :root {
+        overflow: scroll;
+    }
     * {
         font-family: "Space Grotesk", sans-serif;
         font-optical-sizing: auto;

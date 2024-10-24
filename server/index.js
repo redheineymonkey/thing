@@ -13,7 +13,7 @@ const port = 8080;
 
 app.use(handler);
 
-let data = []
+let data = ["{"]
 
 let timeLimit = 30;
 let timeLeft = 0;
@@ -44,7 +44,7 @@ function countVotes(array) {
     }
     console.log(obj)
     console.log(maxKey, ": ", maxValue)
-    data.push(`${currentQuestion}: {${JSON.stringify(obj)} | ${maxKey}: ${maxValue}}`)
+    data.push(`"${currentQuestion}": {${JSON.stringify(obj)}}`)
 
     if(podium){
         const sortedEntries = Object.entries(obj).sort((a, b) => b[1] - a[1]);
@@ -157,6 +157,7 @@ process.stdin.on('data', function (text) {
 });
 
 process.on('exit', () => {
+    data.push("}");
     writeFileSync('./server/db', data.join('\n'));
     console.log(data.join('\n'));
 });
